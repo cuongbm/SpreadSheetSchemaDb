@@ -1,6 +1,4 @@
-﻿﻿using Core.Converters;
-
- namespace Core.Models.Converters
+﻿﻿ namespace Core.Converters
 {
     public class EmptyValueConverter : BaseValueConverter, IValueConverter
     {

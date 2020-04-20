@@ -8,7 +8,7 @@ namespace Core.Converters
     public static class ConverterFactory
     {
         private static Dictionary<string, IValueConverter> covertersMap = new Dictionary<string, IValueConverter>() {
-            { "Int32", new IntValueConverter()},
+            { "Int32", new NumberValueConverter()},
             { "Int64", new IdValueConverter()},
             { "Decimal", new DecimalValueConverter()},
             { "String", new StringValueConverter()},
@@ -21,7 +21,7 @@ namespace Core.Converters
                 case SchemaPropertyType.Decimal:
                     return new DecimalValueConverter();
                 case SchemaPropertyType.Int:
-                    return new IntValueConverter();
+                    return new NumberValueConverter();
                 case SchemaPropertyType.SingleChoice:
                     return new StringValueConverter();
                 case SchemaPropertyType.Double:
@@ -55,7 +55,7 @@ namespace Core.Converters
 
             var converterType = typeof(MatchEnumValueConverter<>);
             var intVal = defintion.MatchEnumValue is Enum ? (int)defintion.MatchEnumValue :
-                (int)new IntValueConverter().FromInput(defintion.MatchEnumValue);
+                (int)new NumberValueConverter().FromInput(defintion.MatchEnumValue);
 
             var enumValue = Enum.ToObject(defintion.EnumType, intVal);
             Type[] typeArgs = { defintion.EnumType };

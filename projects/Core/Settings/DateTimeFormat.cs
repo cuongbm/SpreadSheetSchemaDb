@@ -2,8 +2,12 @@
 {
     public static class DateTimeFormat
     {
-        public const string StorageOutputDateFormat = "MM/dd/yyyy";
-        public const string StorageInputDateFormat = "dd/MM/yyyy";
-        public const string ApiDateFormat = "yyyy-MM-dd";
+        public const string DefaultInputDateFormat = "yyyy-MM-dd";
+        
+        public const string DefaultOutputDateFormat = "yyyy-MM-dd";
+        
+        public const string DefaultInputDateTimeFormat = "yyyy-MM-ddTHH\\:mm\\:ssZ";
+        public const string DefaultOutputDateTimeFormat = "yyyy-MM-ddTHH\\:mm\\:ssZ";
+        
     }
 }

@@ -14,7 +14,7 @@ namespace Core.Converters
         public object FromInput(object obj)
         {
             if (obj is Enum) return obj;
-            var intVal = (int)new IntValueConverter().FromInput(obj);
+            var intVal = (long) new NumberValueConverter().FromInput(obj);
             return Enum.ToObject(typeof(T), intVal);
         }
 
@@ -28,13 +28,13 @@ namespace Core.Converters
 
         public override void SetProperty<TObject>(TObject obj, string propertyName, object value)
         {
+            if (value == null || string.IsNullOrEmpty(value.ToString())) return;
+            
             var property = Reflector.GetProperty(obj, propertyName);
             if (property == null)
             {
-                throw new InvalidOperationException($"Property {propertyName} not found");
+                throw new ArgumentException($"Property {propertyName} not found");
             }
-
-            if (value == null || string.IsNullOrEmpty(value.ToString())) return;
 
             var inputValue = (int)value;
             var enumValue = Enum.ToObject(property.PropertyType, inputValue);

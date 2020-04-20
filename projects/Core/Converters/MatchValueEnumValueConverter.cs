@@ -4,7 +4,8 @@ using Core.Helpers;
 
 namespace Core.Converters
 {
-    public class MatchEnumValueConverter<T> : BaseValueConverter, IValueConverter where T : struct, IComparable, IFormattable, IConvertible
+    public class MatchEnumValueConverter<T> : BaseValueConverter, IValueConverter
+        where T : struct, IComparable, IFormattable, IConvertible
     {
         public T Value { get; }
 
@@ -16,27 +17,29 @@ namespace Core.Converters
 
         public object FromInput(object obj)
         {
-            if (obj is Enum) 
+            if (obj is Enum)
             {
-                if (obj.GetType() == Value.GetType() && ((int)obj & Value.ToInt32(CultureInfo.InvariantCulture)) > 0)
-                {
-                    return Value;
-                }
-                return null;
+                return EnumValueMatchedWithExpected(obj);
             }
-            
-            var intVal = (int)new IntValueConverter().FromInput(obj);
-            if (intVal > 0)
+
+            var intVal = (long) new NumberValueConverter().FromInput(obj);
+            return intVal > 0 ? (object) Value : null;
+        }
+
+        private object EnumValueMatchedWithExpected(object obj)
+        {
+            if (obj.GetType() == Value.GetType() && ((int) obj & Value.ToInt32(CultureInfo.InvariantCulture)) > 0)
             {
                 return Value;
-            };
+            }
+
             return null;
         }
 
         public object ToOutput(object input)
         {
             if (input == null) return "";
-            var parsed = (T)input;
+            var parsed = (T) input;
             var result = parsed.ToInt32(CultureInfo.InvariantCulture) & Value.ToInt32(CultureInfo.InvariantCulture);
 
             return result == 0 ? "" : result.ToString();
@@ -53,8 +56,8 @@ namespace Core.Converters
             if (value == null) return;
             if (value.ToString() == "") return;
 
-            var currentValue = (int)Reflector.GetPropertyValue(obj, propertyName);
-            var inputValue = (int)value;
+            var currentValue = (int) Reflector.GetPropertyValue(obj, propertyName);
+            var inputValue = (int) value;
             var enumValue = Enum.ToObject(property.PropertyType, currentValue | inputValue);
 
             Reflector.SetProperty(obj, propertyName, enumValue);

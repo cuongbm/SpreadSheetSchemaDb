@@ -2,12 +2,12 @@
 
  namespace Core.Converters
 {
-    public class IntValueConverter : BaseValueConverter, IValueConverter
+    public class NumberValueConverter : BaseValueConverter, IValueConverter
     {
         public object FromInput(object obj)
         {
-            int.TryParse(obj.ToString(), out int result);
-            return result;
+            if (obj == null || obj.ToString() == "") return 0L;
+            return long.Parse(obj.ToString());
         }
 
         public object ToOutput(object input)

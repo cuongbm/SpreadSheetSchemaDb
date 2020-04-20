@@ -26,7 +26,7 @@ namespace Core.Converters
             {
                 val = val.Replace(d, "");
             }
-            _ = double.TryParse(val, out double result);
+            var result = double.Parse(val);
             return result;
         }
 

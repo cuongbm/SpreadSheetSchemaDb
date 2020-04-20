@@ -6,15 +6,15 @@ using Core.Settings;
 
 namespace Core.Converters
 {
-    public class DateValueConverter : BaseValueConverter, IValueConverter
+    public class DateTimeValueConverter : BaseValueConverter, IValueConverter
     {
         public string InputFormat { get; }
 
         public string OutputFormat { get; }
 
-        public DateValueConverter(): this(DateTimeFormat.DefaultInputDateFormat, DateTimeFormat.DefaultOutputDateFormat) { }
+        public DateTimeValueConverter(): this(DateTimeFormat.DefaultInputDateTimeFormat, DateTimeFormat.DefaultOutputDateTimeFormat) { }
 
-        public DateValueConverter(string inputFormat, string outputFormat = null)
+        public DateTimeValueConverter(string inputFormat, string outputFormat = null)
         {
             Guards.NotNull(inputFormat, "format");
             this.InputFormat = inputFormat;
@@ -25,7 +25,7 @@ namespace Core.Converters
         {
             if (obj == null) return null;
             if (obj is long || obj is double) {
-                return DateTime.FromOADate(double.Parse(obj.ToString())).Date;
+                return DateTime.FromOADate(double.Parse(obj.ToString()));
             }
             if (obj is DateTime) 
             {
@@ -37,19 +37,18 @@ namespace Core.Converters
                 return null;
             }
             CultureInfo provider = CultureInfo.InvariantCulture;
-            var sArr = val.Split(new[] { " ", "T" }, StringSplitOptions.RemoveEmptyEntries);
-            DateTime dt = DateTime.ParseExact(sArr[0], InputFormat, provider, DateTimeStyles.AllowWhiteSpaces);
-            return dt.Date;
+            DateTime dt = DateTime.ParseExact(val, InputFormat, provider, DateTimeStyles.AllowWhiteSpaces);
+            return dt.ToUniversalTime();
         }
 
         public object ToOutput(object input)
         {
             if (input == null || ReadOnly) return "";
-            if (input is DateTime) 
+            if (input is DateTime time) 
             {
-                return ((DateTime)input).ToString(OutputFormat);
+                return time.ToString(OutputFormat);
             }
-            return input?.ToString() ?? "";
+            return input.ToString();
         }
     }
 }
