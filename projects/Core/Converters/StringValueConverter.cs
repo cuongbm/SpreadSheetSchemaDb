@@ -1,14 +1,14 @@
-﻿﻿namespace Core.Models.Converters
+﻿﻿ namespace Core.Converters
 {
     public class StringValueConverter : BaseValueConverter, IValueConverter
     {
-        public object Convert(object obj)
+        public object FromInput(object obj)
         {
             if (obj == null) return "";
             return obj.ToString();
         }
 
-        public object Output(object obj)
+        public object ToOutput(object obj)
         {
             if (obj == null || ReadOnly) return "";
             return obj.ToString();

@@ -1,8 +1,9 @@
-﻿﻿using Core.Schemas;
- using System;
+﻿using System;
 using System.Collections.Generic;
+using Core.Models.Converters;
+using Core.Schemas;
 
- namespace Core.Models.Converters
+namespace Core.Converters
 {
     public static class ConverterFactory
     {
@@ -12,13 +13,6 @@ using System.Collections.Generic;
             { "Decimal", new DecimalValueConverter()},
             { "String", new StringValueConverter()},
         };
-
-        public static IValueConverter GetConverter(Type type)
-        {
-            var typeName = type.Name;
-            if (covertersMap.ContainsKey(typeName)) return covertersMap[typeName];
-            throw new InvalidOperationException($"Converter for type {typeName} is not configured");
-        }
 
         public static IValueConverter GetConverter(BasePropertyDefinition defintion)
         {
@@ -61,7 +55,7 @@ using System.Collections.Generic;
 
             var converterType = typeof(MatchEnumValueConverter<>);
             var intVal = defintion.MatchEnumValue is Enum ? (int)defintion.MatchEnumValue :
-                (int)new IntValueConverter().Convert(defintion.MatchEnumValue);
+                (int)new IntValueConverter().FromInput(defintion.MatchEnumValue);
 
             var enumValue = Enum.ToObject(defintion.EnumType, intVal);
             Type[] typeArgs = { defintion.EnumType };

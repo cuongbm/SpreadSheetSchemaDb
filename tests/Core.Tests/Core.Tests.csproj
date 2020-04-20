@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <RootNamespace>UniTests</RootNamespace>
         <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
 
@@ -9,6 +8,10 @@
       <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
       <PackageReference Include="NUnit" Version="3.12.0" />
       <PackageReference Include="NUnit3TestAdapter" Version="3.17.0-beta.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\projects\Core\Core.csproj" />
     </ItemGroup>
 
 </Project>

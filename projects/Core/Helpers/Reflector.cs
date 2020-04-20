@@ -2,8 +2,9 @@
 using System;
 using System.Globalization;
 using System.Reflection;
+ using Core.Converters;
 
-namespace Core.Helpers
+ namespace Core.Helpers
 {
     public static class Reflector
     {
@@ -29,17 +30,6 @@ namespace Core.Helpers
                                 Type.DefaultBinder,
                                 obj,
                                 new[] { value }, CultureInfo.InvariantCulture);
-        }
-
-        public static void ConvertAndSetProperty(object obj, string propertyName, object value)
-        {
-            PropertyInfo propertyInfo = Reflector.GetProperty(obj, propertyName);
-            if (propertyInfo == null) 
-            {
-                throw new ArgumentException($"Property '{propertyName}' not found for type {obj.GetType()}");
-            }
-            var converter = ConverterFactory.GetConverter(propertyInfo.PropertyType);
-            converter.SetProperty(obj, propertyName, converter.Convert(value));
         }
     }
 }

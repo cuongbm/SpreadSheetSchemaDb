@@ -1,7 +1,9 @@
-﻿﻿using Core.Helpers;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Core.Helpers;
+using Core.Models.Converters;
 
-namespace Core.Models.Converters
+namespace Core.Converters
 {
     public class DecimalValueConverter : BaseValueConverter, IValueConverter
     {
@@ -11,18 +13,19 @@ namespace Core.Models.Converters
         public DecimalValueConverter(IEnumerable<string> removeCharacters)
         {
             Guards.NotNull(removeCharacters, "removeCharacters cannot be null");
-            foreach (var removeCharacter in removeCharacters) 
+            var characters = removeCharacters as string[] ?? removeCharacters.ToArray();
+            foreach (var removeCharacter in characters) 
             {
                 Guards.NotNullOrEmpty(removeCharacter, "removeCharacter cannot be null");
             }
-            this.RemoveCharacters = removeCharacters;
+            this.RemoveCharacters = characters;
         }
 
         public DecimalValueConverter() : this(new[] { ",", "đ" })
         {
         }
 
-        public object Convert(object obj)
+        public object FromInput(object obj)
         {
             if (obj == null) return 0m;
             string val = obj.ToString();
@@ -35,7 +38,7 @@ namespace Core.Models.Converters
             return result;
         }
 
-        public object Output(object input)
+        public object ToOutput(object input)
         {
             if (input == null || ReadOnly) return "";
             return input.ToString();

@@ -1,9 +1,8 @@
-﻿﻿using Core.Helpers;
-using System;
-using System.ComponentModel;
+﻿using System;
 using System.Globalization;
+using Core.Helpers;
 
-namespace Core.Models.Converters
+namespace Core.Converters
 {
     public class MatchEnumValueConverter<T> : BaseValueConverter, IValueConverter where T : struct, IComparable, IFormattable, IConvertible
     {
@@ -15,7 +14,7 @@ namespace Core.Models.Converters
             Value = value;
         }
 
-        public object Convert(object obj)
+        public object FromInput(object obj)
         {
             if (obj is Enum) 
             {
@@ -26,7 +25,7 @@ namespace Core.Models.Converters
                 return null;
             }
             
-            var intVal = (int)new IntValueConverter().Convert(obj);
+            var intVal = (int)new IntValueConverter().FromInput(obj);
             if (intVal > 0)
             {
                 return Value;
@@ -34,7 +33,7 @@ namespace Core.Models.Converters
             return null;
         }
 
-        public object Output(object input)
+        public object ToOutput(object input)
         {
             if (input == null) return "";
             var parsed = (T)input;

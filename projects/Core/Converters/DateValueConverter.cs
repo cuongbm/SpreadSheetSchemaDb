@@ -1,13 +1,13 @@
-﻿﻿using Core.Helpers;
-using Core.Settings;
-using System;
+﻿using System;
 using System.Globalization;
+using Core.Helpers;
+using Core.Models.Converters;
+using Core.Settings;
 
-namespace Core.Models.Converters
+namespace Core.Converters
 {
     public class DateValueConverter : BaseValueConverter, IValueConverter
     {
-
         public string InputFormat { get; }
 
         public string OutputFormat { get; }
@@ -21,13 +21,13 @@ namespace Core.Models.Converters
             this.OutputFormat = outputFormat == null ? inputFormat : outputFormat;
         }
 
-        public object Convert(object obj)
+        public object FromInput(object obj)
         {
             if (obj == null) return DateTime.Now;
-            if (obj.GetType() == typeof(long) || obj.GetType() == typeof(double)) {
-                return DateTime.FromOADate(double.Parse(obj.ToString()));
+            if (obj is long || obj is double) {
+                return DateTime.FromOADate(double.Parse(obj.ToString())).Date;
             }
-            if (obj.GetType() == typeof(DateTime)) 
+            if (obj is DateTime) 
             {
                 return obj;
             }
@@ -42,10 +42,10 @@ namespace Core.Models.Converters
             return dt.Date;
         }
 
-        public object Output(object input)
+        public object ToOutput(object input)
         {
             if (input == null || ReadOnly) return "";
-            if (input != null && input.GetType() == typeof(DateTime)) 
+            if (input is DateTime) 
             {
                 return ((DateTime)input).ToString(OutputFormat);
             }

@@ -1,8 +1,9 @@
-﻿﻿using Core.Helpers;
-using System;
+﻿using System;
 using System.Globalization;
+using Core.Helpers;
+using Core.Models.Converters;
 
-namespace Core.Models.Converters
+namespace Core.Converters
 {
     public class EnumValueConverter<T> : BaseValueConverter, IValueConverter where T : struct, IComparable, IFormattable, IConvertible
     {
@@ -10,14 +11,14 @@ namespace Core.Models.Converters
         {
         }
 
-        public object Convert(object obj)
+        public object FromInput(object obj)
         {
             if (obj is Enum) return obj;
-            var intVal = (int)new IntValueConverter().Convert(obj);
+            var intVal = (int)new IntValueConverter().FromInput(obj);
             return Enum.ToObject(typeof(T), intVal);
         }
 
-        public object Output(object input)
+        public object ToOutput(object input)
         {
             var parsed = (T)input;
             var result = parsed.ToInt32(CultureInfo.InvariantCulture);

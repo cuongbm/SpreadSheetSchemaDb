@@ -1,6 +1,7 @@
-﻿﻿using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Core.Models.Converters;
 
-namespace Core.Models.Converters
+namespace Core.Converters
 {
     public class DoubleValueConverter : BaseValueConverter, IValueConverter
     {
@@ -17,7 +18,7 @@ namespace Core.Models.Converters
             this.RemoveCharacters = new List<string>();
         }
 
-        public object Convert(object obj)
+        public object FromInput(object obj)
         {
             if (obj == null) return 0.0d;
             string val = obj.ToString();
@@ -29,7 +30,7 @@ namespace Core.Models.Converters
             return result;
         }
 
-        public object Output(object input)
+        public object ToOutput(object input)
         {
             if (input == null || ReadOnly) return "";
             return input.ToString();

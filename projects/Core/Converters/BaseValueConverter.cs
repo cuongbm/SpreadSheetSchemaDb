@@ -1,6 +1,6 @@
 ﻿﻿using Core.Helpers;
 
-namespace Core.Models.Converters
+ namespace Core.Converters
 {
     public abstract class BaseValueConverter
     {

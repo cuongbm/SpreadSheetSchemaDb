@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Core.Converters;
 using Core.Models.Converters;
 
 namespace Core.Schemas
@@ -33,7 +34,7 @@ namespace Core.Schemas
         public object OutputValue()
         {
             var converter = ConverterFactory.GetConverter(Definition);
-            var output = converter.Output(Value);
+            var output = converter.ToOutput(Value);
             return output;
         }
     }

@@ -1,20 +1,8 @@
-﻿﻿using System.Collections.Generic;
-
-namespace Core.Models.Converters
+﻿namespace Core.Converters
 {
     public class PercentageValueConverter : BaseValueConverter, IValueConverter
     {
-        private bool autoScale = false;
-        public PercentageValueConverter() : this(true)
-        {
-        }
-
-        public PercentageValueConverter(bool autoScale)
-        {
-            this.autoScale = autoScale;
-        }
-
-        public object Convert(object obj)
+        public object FromInput(object obj)
         {
             if (obj == null) return 0d;
             string val = obj.ToString();
@@ -23,7 +11,7 @@ namespace Core.Models.Converters
             return result * multiplier;
         }
 
-        public object Output(object input)
+        public object ToOutput(object input)
         {
             if (input == null || ReadOnly) return "";
             if (input.ToString().EndsWith("%")) return input;

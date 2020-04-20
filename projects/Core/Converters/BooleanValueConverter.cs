@@ -1,8 +1,10 @@
-﻿﻿namespace Core.Models.Converters
+﻿﻿using Core.Models.Converters;
+
+ namespace Core.Converters
 {
     public class BooleanValueConverter : BaseValueConverter, IValueConverter
     {
-        public object Convert(object obj)
+        public object FromInput(object obj)
         {
             if (obj.ToString().ToLower() == "true" || obj.ToString() == "1") return true;
             if (obj.ToString().ToLower() == "false" || obj.ToString() == "0") return false;
@@ -10,7 +12,7 @@
             return result;
         }
 
-        public object Output(object input)
+        public object ToOutput(object input)
         {
             if (input == null) return "";
             if (input is bool && ((bool) input) == true) {

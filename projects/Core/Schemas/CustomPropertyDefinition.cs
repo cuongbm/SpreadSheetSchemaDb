@@ -1,8 +1,9 @@
 ﻿﻿using Core.Models.Converters;
 using System;
 using System.Collections.Generic;
+ using Core.Converters;
 
-namespace Core.Schemas
+ namespace Core.Schemas
 {
     public class CustomPropertyDefinition : BasePropertyDefinition
     {
@@ -127,12 +128,12 @@ namespace Core.Schemas
 
         public object ConvertAndOutput(object rawValue)
         {
-            return GetConverter().Output(ConvertThenValidate(rawValue));
+            return GetConverter().ToOutput(ConvertThenValidate(rawValue));
         }
 
         public object ConvertThenValidate(object rawValue)
         {
-            var convertedValue = GetConverter().Convert(rawValue);
+            var convertedValue = GetConverter().FromInput(rawValue);
             new PropertyValidator(this).Validate(convertedValue);
             return convertedValue;
         }
